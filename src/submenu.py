@@ -1,4 +1,3 @@
-import os
 from campo_minado import CampoMinado
 from menu_selecao_posicao_jogo import MenuSelecaoPosicaoJogo
 from jogador import Jogador
@@ -11,7 +10,6 @@ class SubMenu:
 
     def submenu(self):
         mapa = CampoMinado(self._qtd_linhas, self._qtd_colunas)
-        # mapa.imprime_mapa()
 
         qtd_bombas = 0
         while True:

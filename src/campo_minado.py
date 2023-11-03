@@ -90,23 +90,15 @@ class CampoMinado:
     def processa_jogada(self, linha, coluna):
         if isinstance(self._mapa[linha][coluna], Bomba):
             self._perdeu_jogo = True
-        else: #isinstance(self._mapa[linha][coluna], Peca):
+        else:
             self._processa_acertou_peca(self._mapa[linha][coluna])
 
     def _processa_acertou_peca(self, peca: Peca):
-        # if peca.esta_oculta:
-        #     peca.define_visivel()
-        #     if not isinstance(peca, Bomba):
-        #         self._qtd_visivel += 1
-
         for l in range(peca.linha - 1,  peca.linha + 1):
             for c in range(peca.coluna - 1,  peca.coluna + 1):
                 if 0 <= l < self._qtd_linhas and 0 <= c < self._qtd_colunas:
                     if isinstance(self._mapa[l][c], Peca) and not isinstance(self._mapa[l][c], Bomba):
                          self._mapa[l][c].define_visivel()
-                        #  if not isinstance(peca, Bomba):
-                        #     self._qtd_visivel += 1
-                        #     self._atualiza_score()
 
         self._atualiza_qtd_visivel()
         self._atualiza_score()

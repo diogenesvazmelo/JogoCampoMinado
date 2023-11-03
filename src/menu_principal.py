@@ -62,7 +62,6 @@ class MenuPrincipal:
                 self._msg = "Entrada inválida!"
 
     def _exibir_menu(self):
-        # Clearing the Screen
         os.system('cls')
 
         print()
@@ -76,7 +75,6 @@ class MenuPrincipal:
             print(f" MENSAGEM DE ALERTA: {self._msg}\n")
 
     def _exibir_vamos_jogar(self, jogador: Jogador):
-        # Clearing the Screen
         os.system('cls')
 
         print()
@@ -90,7 +88,6 @@ class MenuPrincipal:
             print(f" MENSAGEM DE ALERTA: {self._msg}\n")
         
     def _exibir_inserir_nick(self):
-        # Clearing the Screen
         os.system('cls')
 
         print()

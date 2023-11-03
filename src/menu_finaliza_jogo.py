@@ -43,7 +43,6 @@ class MenuFinalizaJogo:
                 self._msg = "Entrada inválida!"
 
     def _exibir_menu_finalizacao(self, mapa: CampoMinado):
-        # Clearing the Screen
         os.system('cls')
 
         print()
@@ -57,13 +56,11 @@ class MenuFinalizaJogo:
             print(f" MENSAGEM DE ALERTA: {self._msg}\n")
 
     def _exibir_menu_salvo_sucesso(self, mapa: CampoMinado):
-        # Clearing the Screen
         os.system('cls')
 
         print()
         print("╔═══════════════════════════════ CAMPO MINADO ═══════════════════════════════╗")
         print("║                                                                            ║")
-        #print("║  SALVAR SCORE                                                Score: {}  ║".format(str(mapa.score).zfill(5)))
         print(f"║  SALVAR SCORE                                     {self._jogador.nick.rjust(MAX_LEN_NICK)}   Score: {str(mapa.score).ljust(5)}  ║")
         print("║                                                                            ║")
         print("║  Score salvo com sucesso!                                                  ║")
@@ -72,13 +69,11 @@ class MenuFinalizaJogo:
             print(f" MENSAGEM DE ALERTA: {self._msg}\n")
 
     def _exibir_menu_salvo_falha(self, mapa: CampoMinado):
-        # Clearing the Screen
         os.system('cls')
 
         print()
         print("╔═══════════════════════════════ CAMPO MINADO ═══════════════════════════════╗")
         print("║                                                                            ║")
-        #print("║  SALVAR SCORE                                                Score: {}  ║".format(str(mapa.score).zfill(5)))
         print(f"║  SALVAR SCORE                                     {self._jogador.nick.rjust(MAX_LEN_NICK)}   Score: {str(mapa.score).ljust(5)}  ║")
         print("║                                                                            ║")
         print("║  Infelizmente não foi possível salvar seu Score no momento                 ║")
@@ -101,6 +96,3 @@ class MenuFinalizaJogo:
         for registro in registros_ordenados[:5]:
             data_formatada = datetime.strptime(registro["data"], "%Y-%m-%dT%H:%M:%S.%f").strftime("%d/%m/%Y %H:%M")
             print(" {:<15} {:<10} {:<25}".format(registro["nick"], registro["score"], data_formatada))
-
-
-    # def _trata_string_tamanho_mapa(self, texto_input: str):

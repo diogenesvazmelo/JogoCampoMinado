@@ -24,8 +24,7 @@ class MenuSelecaoPosicaoJogo:
                 if mapa.acessa_peca_mapa(l - 1, c - 1).esta_oculta:
                     self._msg = ""
                     mapa.processa_jogada(l - 1, c - 1)
-                    # if not mapa.perdeu_jogo and not mapa.ganhou_jogo:
-                    #     mapa.imprime_mapa()
+
                     if mapa.perdeu_jogo or mapa.ganhou_jogo:
                         self._finalizacao_jogo(mapa)
                         menu_finaliza = MenuFinalizaJogo(mapa, self._jogador)
@@ -34,16 +33,12 @@ class MenuSelecaoPosicaoJogo:
                 else:
                     self._msg = "A posição selecionada já foi revelada. Escolha uma posição diferente."
             elif l > mapa.qtd_linhas and l > mapa.qtd_colunas:
-                # print("Linha e coluna acima do tamanho do mapa!")
                 self._msg = "Linha e coluna acima do tamanho do mapa!"
             elif l > mapa.qtd_linhas:
-                # print("Linha acima do tamanho do mapa!")
                 self._msg = "Linha acima do tamanho do mapa!"
             elif c > mapa.qtd_colunas:
-                # print("Coluna acima do tamanho do mapa!")
                 self._msg = "Coluna acima do tamanho do mapa!"
             else:
-                # print(erro)
                 self._msg = erro
             
     def trata_string_linha_coluna_escolhida(self, texto_input: str):
@@ -76,8 +71,6 @@ class MenuSelecaoPosicaoJogo:
             except ValueError:
                 return "Houve erro na operação ao registrar o valor da coluna. A string não está no formato esperado. (ValueError)"
     
-        # if len(numeros) == 2 and ( 0 < numeros[0] <= mapa.qtd_linhas) and (0 < numeros[1] <= mapa.qtd_colunas):
-        #     return numeros[0], numeros[1], ""
         if len(numeros) == 2 and (numeros[0] > 0 or numeros[1] > 0):
             return numeros[0], numeros[1], "Houve erro na operação. O valor de linhas e colunas deve ser superior a zero."
         else:
@@ -85,7 +78,6 @@ class MenuSelecaoPosicaoJogo:
             return -1, -1, "Entrada Inválida! (Valor nulo ou negativo)"
         
     def _exibir_cabecalho(self, mapa: CampoMinado):
-        # Clearing the Screen
         os.system('cls')
 
         print()
@@ -100,7 +92,6 @@ class MenuSelecaoPosicaoJogo:
         print()
 
     def _exibir_cabecalho_perdedor(self, mapa: CampoMinado):
-        # Clearing the Screen
         os.system('cls')
 
         print()
@@ -112,7 +103,6 @@ class MenuSelecaoPosicaoJogo:
         print("╚════════════════════════════════════════════════════════════════════════════╝")
 
     def _exibir_cabecalho_vencedor(self, mapa: CampoMinado):
-        # Clearing the Screen
         os.system('cls')
 
         print()
