@@ -19,7 +19,7 @@ Jogue tentando não explodir as bombas! Quanto mais posições revelar, maior o 
 Para salvar seu Score, é necessária conexão com a internet.
 
 ## Comentários
-Jogo desenvolvido em Pythonm, código fonte disponível na pasta "/src".
+Jogo desenvolvido em Python, código fonte disponível na pasta "/src".
 
 O ranking do histórico de pontuações (score) funciona como em fliperamas antigos, ou seja, seu nickname não é único. Portanto, seja criativo na escolha! 
 
