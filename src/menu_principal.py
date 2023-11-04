@@ -27,32 +27,13 @@ class MenuPrincipal:
                     self._exibir_vamos_jogar(jogador)
                     texto_input = input(" Qual o tamanho do mapa? Informe a quantidade de linhas e colunas (máx.: {}x{}): ".format(MAX_LINHAS, MAX_COLUNAS))
                     qtd_linhas, qtd_colunas, erro = self._trata_string_tamanho_mapa(texto_input)
-                    
+
                     if (MIN_LINHAS <= qtd_linhas <= MAX_LINHAS) and (MIN_COLUNAS <= qtd_colunas <= MAX_COLUNAS):
                         self._msg = ""
                         break
-                    elif qtd_linhas > MAX_LINHAS and qtd_colunas > MAX_COLUNAS:
-                        self._msg = "Quantidade de linhas e colunas acima do permitido!"
-                    elif qtd_linhas < MIN_LINHAS and qtd_colunas < MIN_COLUNAS:
-                        self._msg = "Quantidade de linhas e colunas abaixo do permitido!"
-                    
-                    elif qtd_linhas > MAX_LINHAS and qtd_colunas < MIN_COLUNAS:
-                        self._msg = "Quantidade de linhas acima do permitido e colunas abaixo do permitido!"
-                    elif qtd_linhas < MIN_LINHAS and qtd_colunas > MAX_COLUNAS:
-                        self._msg = "Quantidade de linhas abaixo do permitido e colunas acima do permitido!"
-                    
-                    elif qtd_linhas > MAX_LINHAS:
-                        self._msg = "Quantidade de linhas acima do permitido!"
-                    elif qtd_colunas > MAX_COLUNAS:
-                        self._msg = "Quantidade de colunas acima do permitido!"
-
-                    elif qtd_linhas > MIN_LINHAS:
-                        self._msg = "Quantidade de linhas abaixo do permitido!"
-                    elif qtd_colunas > MIN_COLUNAS:
-                        self._msg = "Quantidade de colunas abaixo do permitido!"
-
                     else:
-                        self._msg = erro
+                        self._envia_msg_alerta_tamanho_mapa(qtd_linhas, qtd_colunas, erro)
+
                 submenu1 = SubMenu(qtd_linhas, qtd_colunas, jogador)
                 submenu1.submenu()
             elif escolha == "2":
@@ -124,4 +105,27 @@ class MenuPrincipal:
         if qtd_linhas > 0 and qtd_colunas > 0:
             return qtd_linhas, qtd_colunas, ""
         else:
-            return -1, -1, "Entrada Inválida! (Valor nulo ou negativo)"
+            return -1, -1, "Entrada Inválida!"
+
+    def _envia_msg_alerta_tamanho_mapa(self, qtd_linhas: int, qtd_colunas: int, erro: str):
+        if qtd_linhas < 0 or qtd_colunas < 0:
+            self._msg = erro
+        elif qtd_linhas > MAX_LINHAS and qtd_colunas > MAX_COLUNAS:
+            self._msg = "Quantidade de linhas e colunas acima do permitido!"
+        elif qtd_linhas < MIN_LINHAS and qtd_colunas < MIN_COLUNAS:
+            self._msg = "Quantidade de linhas e colunas abaixo do permitido!"
+        
+        elif qtd_linhas > MAX_LINHAS and qtd_colunas < MIN_COLUNAS:
+            self._msg = "Quantidade de linhas acima do permitido e colunas abaixo do permitido!"
+        elif qtd_linhas < MIN_LINHAS and qtd_colunas > MAX_COLUNAS:
+            self._msg = "Quantidade de linhas abaixo do permitido e colunas acima do permitido!"
+        
+        elif qtd_linhas > MAX_LINHAS:
+            self._msg = "Quantidade de linhas acima do permitido!"
+        elif qtd_colunas > MAX_COLUNAS:
+            self._msg = "Quantidade de colunas acima do permitido!"
+
+        elif qtd_linhas < MIN_LINHAS:
+            self._msg = "Quantidade de linhas abaixo do permitido!"
+        else:
+            self._msg = "Quantidade de colunas abaixo do permitido!"
