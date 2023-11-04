@@ -25,3 +25,5 @@ O ranking do histórico de pontuações (score) funciona como em fliperamas anti
 
 Ainda sobre o ranking, vale observar que ele é salvo em um Json armazenado em um bucket no AWS S3. As chaves de acesso não foram disponibilizadas.
 
+
+Diógenes Vaz de Melo, Luiz Ribeiro
