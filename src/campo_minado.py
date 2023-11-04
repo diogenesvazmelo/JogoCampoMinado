@@ -32,37 +32,18 @@ class CampoMinado:
         self._atualiza_pecas_proximas_de_bomba()
         
     def _atualiza_pecas_proximas_de_bomba(self):
-        for l in range(self._qtd_linhas):
-            for c in range(self._qtd_colunas):
-                if isinstance(self._mapa[l][c], Peca) and not isinstance(self._mapa[l][c], Bomba):
-                    soma = 0
-
-                    if c - 1 >= 0 and isinstance(self._mapa[l][c - 1], Bomba):
+        for linha in range(self._qtd_linhas):
+            for coluna in range(self._qtd_colunas):
+                self._atualiza_valor_peca_bombas(linha, coluna)
+    
+    def _atualiza_valor_peca_bombas(self, linha: int, coluna: int):
+        if not isinstance(self._mapa[linha][coluna], Bomba):
+            soma = 0
+            for sublinha in range(linha - 1, linha + 2):
+                for subcoluna in range(coluna - 1, coluna + 2):
+                    if (sublinha >= 0 and sublinha <self._qtd_linhas) and (subcoluna >= 0 and subcoluna <self._qtd_colunas) and isinstance(self._mapa[sublinha][subcoluna], Bomba):
                         soma += 1
-
-                    if c + 1 < self._qtd_colunas and isinstance(self._mapa[l][c + 1], Bomba):
-                        soma += 1
-
-                    if l - 1 >= 0 and isinstance(self._mapa[l - 1][c], Bomba):
-                        soma += 1
-
-                    if l + 1 < self._qtd_linhas and isinstance(self._mapa[l + 1][c], Bomba):
-                        soma += 1
-
-                    if l - 1 >= 0 and c - 1 >= 0 and isinstance(self._mapa[l - 1][c - 1], Bomba):
-                        soma += 1
-
-                    if l - 1 >= 0 and c + 1 < self._qtd_colunas and isinstance(self._mapa[l - 1][c + 1], Bomba):
-                        soma += 1
-
-                    if c - 1 >= 0 and l + 1 < self._qtd_linhas and isinstance(self._mapa[l + 1][c - 1], Bomba):
-                        soma += 1
-
-                    if l + 1 < self._qtd_linhas and c + 1 < self._qtd_colunas and isinstance(self._mapa[l + 1][c + 1], Bomba):
-                        soma += 1
-
-                    if soma > 0:
-                        self._mapa[l][c].set_valor(soma)
+            self._mapa[linha][coluna].set_valor(soma)
 
     def imprime_mapa(self, imprime_solucao = False):
         if imprime_solucao:
@@ -94,10 +75,11 @@ class CampoMinado:
             self._processa_acertou_peca(self._mapa[linha][coluna])
 
     def _processa_acertou_peca(self, peca: Peca):
-        for l in range(peca.linha - 1,  peca.linha + 1):
-            for c in range(peca.coluna - 1,  peca.coluna + 1):
+        peca.define_visivel()
+        for l in range(peca.linha - 1,  peca.linha + 2):
+            for c in range(peca.coluna - 1,  peca.coluna + 2):
                 if 0 <= l < self._qtd_linhas and 0 <= c < self._qtd_colunas:
-                    if isinstance(self._mapa[l][c], Peca) and not isinstance(self._mapa[l][c], Bomba):
+                    if (self._mapa[l][c].get_valor() > 0) and (not isinstance(self._mapa[l][c], Bomba)):
                          self._mapa[l][c].define_visivel()
 
         self._atualiza_qtd_visivel()
