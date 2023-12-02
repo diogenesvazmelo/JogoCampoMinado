@@ -4,12 +4,30 @@ import json
 from campo_minado import CampoMinado
 from jogador import Jogador
 
-from aws_credentials import ARQ_AWS_CREDENTIALS
+import importlib.util
+arq_aws_credentials_spec = importlib.util.find_spec("aws_credentials")
+if arq_aws_credentials_spec is not None:
+    from aws_credentials import ARQ_AWS_CREDENTIALS
 
 class AWSHandler:
     def __init__(self, mapa: CampoMinado, jogador: Jogador):
         self._status_score_salvo = False
         self._dados = self._prepara_dados(mapa, jogador)
+
+        self._s3 = None
+        self._sucesso_autentica = self._autentica()
+
+        self._arquivo_aws_credentials_disponivel = False
+        if arq_aws_credentials_spec is not None:
+            self._arquivo_aws_credentials_disponivel = True
+    
+    def _autentica(self) -> bool:
+        try:
+            self._s3 = boto3.client('s3', aws_access_key_id=self.aws_access_key_id, aws_secret_access_key=self.aws_secret_access_key)
+            return True
+        except:
+            return False
+
 
     def salvar_no_s3(self) -> datetime:
         lista_hist = self.ler_do_s3()["Registros"]
@@ -19,8 +37,7 @@ class AWSHandler:
         json_combinado["Registros"] = lista_hist
         
         # Salvando os dados atualizados no S3
-        s3 = boto3.client('s3', aws_access_key_id=self.aws_access_key_id, aws_secret_access_key=self.aws_secret_access_key)
-        s3.put_object(Body=json.dumps(json_combinado), Bucket=self.bucket_name, Key=self.file_name)
+        self._s3.put_object(Body=json.dumps(json_combinado), Bucket=self.bucket_name, Key=self.file_name)
 
         self._status_score_salvo = True
 
@@ -29,20 +46,14 @@ class AWSHandler:
     def zerar_placar(self):
         json_base = {}
         json_base["Registros"] = []
-        s3 = boto3.client('s3', aws_access_key_id=self.aws_access_key_id, aws_secret_access_key=self.aws_secret_access_key)
-        s3.put_object(Body=json.dumps(json_base), Bucket=self.bucket_name, Key=self.file_name)
+        self._s3.put_object(Body=json.dumps(json_base), Bucket=self.bucket_name, Key=self.file_name)
 
     def ler_do_s3(self) -> dict:
-        # s3 = boto3.client('s3', aws_access_key_id=self.aws_access_key_id, aws_secret_access_key=self.aws_secret_access_key)
-        # response = s3.get_object(Bucket=self.bucket_name, Key=self.file_name)
-        # dados_lidos = json.loads(response['Body'].read().decode('utf-8'))
-        # return dados_lidos
-
-        s3 = boto3.client('s3', aws_access_key_id=self.aws_access_key_id, aws_secret_access_key=self.aws_secret_access_key)
         try:
-            response = s3.get_object(Bucket=self.bucket_name, Key=self.file_name)
+            response = self._s3.get_object(Bucket=self.bucket_name, Key=self.file_name)
             dados_lidos = json.loads(response['Body'].read().decode('utf-8'))
-        except s3.exceptions.NoSuchKey:
+            self._s3.close()
+        except self._s3.exceptions.NoSuchKey:
             # Se o arquivo não existir, retorna um dicionario vazio
             json_base = {}
             json_base["Registros"] = []
@@ -51,8 +62,6 @@ class AWSHandler:
         return dados_lidos
     
     def _ler_aws_credentials(self):
-        # with open(ARQ_AWS_CREDENTIALS, 'r') as file:
-        #     arq = json.load(file)
         arq = ARQ_AWS_CREDENTIALS
 
         # Extrai as credenciais
@@ -95,3 +104,16 @@ class AWSHandler:
     @property
     def status_score_salvo(self) -> bool:
         return self._status_score_salvo
+
+    @property
+    def arquivo_aws_credentials_disponivel(self) -> bool:
+        return self._arquivo_aws_credentials_disponivel
+    
+    @property
+    def sucesso_autentica(self) -> bool:
+        return self._sucesso_autentica
+    
+    @property
+    def dados(self) -> dict:
+        return self._dados
+    
