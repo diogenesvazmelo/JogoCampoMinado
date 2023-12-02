@@ -13,14 +13,21 @@ class MenuFinalizaJogo:
         self._msg = msg
 
     def menu_finaliza_jogo(self):
-        while True:
+        aws_handler = AWSHandler(self._mapa, self._jogador)
+
+        if not aws_handler.arquivo_aws_credentials_disponivel:
+            self._exibir_menu_missing_aws_credentials(self._mapa)
+            input("\n\n Pressione ENTER para continuar...")
+        elif not aws_handler.sucesso_autentica:
+            self._exibir_menu_salvo_falha(self._mapa)
+            input("\n\n Pressione ENTER para continuar...")
+
+        while aws_handler.sucesso_autentica:
             self._exibir_menu_finalizacao(self._mapa)
             escolha = str(input(" Escolha: "))
 
             if escolha == "1":
                 self._msg = ""
-
-                aws_handler = AWSHandler(self._mapa, self._jogador)
 
                 # Caso precise apagar o registro de placar, descomentar a linha abaixo:
                 # aws_handler.zerar_placar()
@@ -80,6 +87,17 @@ class MenuFinalizaJogo:
         print("╚════════════════════════════════════════════════════════════════════════════╝")
         if self._msg != "":
             print(f" MENSAGEM DE ALERTA: {self._msg}\n")
+
+    def _exibir_menu_missing_aws_credentials(self, mapa: CampoMinado):
+        os.system('cls')
+
+        print()
+        print("╔═══════════════════════════════ CAMPO MINADO ═══════════════════════════════╗")
+        print("║                                                                            ║")
+        print(f"║  SALVAR SCORE                                     {self._jogador.nick.rjust(MAX_LEN_NICK)}   Score: {str(mapa.score).ljust(5)}  ║")
+        print("║  Não foi possível salvar o score pois as credenciais de acesso ao serviço  ║")
+        print("║  que registra o placar não foram encontradas.                              ║")
+        print("╚════════════════════════════════════════════════════════════════════════════╝")
 
     def _exibir_ranking(self, json_com_registro: dict, data_procurada: datetime):
         # Ordenar os registros pelo "valor" (decrescente) e pela data (decrescente)
