@@ -17,19 +17,24 @@ class CampoMinado:
         self._perdeu_jogo = False
         self._ganhou_jogo = False
 
-    def preenche_com_bombas(self, qtd_bombas):
+    def preenche_com_bombas(self, qtd_bombas: int):
         self._qtd_bombas = qtd_bombas
         bombas_colocadas = 0
         while bombas_colocadas < qtd_bombas:
             linha = random.randint(0, self._qtd_linhas - 1)
             coluna = random.randint(0, self._qtd_colunas - 1)
 
-            if isinstance(self._mapa[linha][coluna], Peca) and not isinstance(self._mapa[linha][coluna], Bomba):
-                # Se a célula contém uma instância de Peca, adicione a bomba
-                self._mapa[linha][coluna] = Bomba(linha, coluna)  # Substitui Peca() pela classe real das bombas
-                bombas_colocadas += 1
+            bombas_colocadas += self._coloca_bomba_posicao(linha, coluna)
 
-        self._atualiza_pecas_proximas_de_bomba()
+    def _coloca_bomba_posicao(self, linha: int, coluna: int) -> int:
+        if isinstance(self._mapa[linha][coluna], Peca) and not isinstance(self._mapa[linha][coluna], Bomba):
+            # Se a célula contém uma instância de Peca, adicione a bomba
+            self._mapa[linha][coluna] = Bomba(linha, coluna)  # Substitui Peca() pela classe real das bombas
+            
+            self._atualiza_pecas_proximas_de_bomba()
+
+            return 1
+        return 0
         
     def _atualiza_pecas_proximas_de_bomba(self):
         for linha in range(self._qtd_linhas):
@@ -80,7 +85,7 @@ class CampoMinado:
             for c in range(peca.coluna - 1,  peca.coluna + 2):
                 if 0 <= l < self._qtd_linhas and 0 <= c < self._qtd_colunas:
                     if (self._mapa[l][c].get_valor() > 0) and (not isinstance(self._mapa[l][c], Bomba)):
-                         self._mapa[l][c].define_visivel()
+                        self._mapa[l][c].define_visivel()
 
         self._atualiza_qtd_visivel()
         self._atualiza_score()
@@ -120,10 +125,16 @@ class CampoMinado:
     @property
     def qtd_bombas(self) -> int:
         return self._qtd_bombas
+    @qtd_bombas.setter
+    def qtd_bombas(self, qtd: int):
+        self._qtd_bombas = qtd
     
     @property
     def score(self) -> int:
         return self._score
+    @score.setter
+    def score(self, score: int):
+        self._score = score
     
     @property
     def qtd_linhas(self) -> int:
