@@ -1,6 +1,7 @@
 import boto3
 from datetime import datetime
 import json
+import os
 from campo_minado import CampoMinado
 from jogador import Jogador
 
@@ -84,23 +85,37 @@ class AWSHandler:
     
     @property
     def aws_access_key_id(self) -> str:
-        return self._ler_aws_credentials()[0]
-
+        if arq_aws_credentials_spec is not None:
+            return self._ler_aws_credentials()[0]
+        else:
+            return os.environ.get('AWS_ACCESS_KEY_ID')
     @property
     def aws_secret_access_key(self) -> str:
-        return self._ler_aws_credentials()[1]
+        if arq_aws_credentials_spec is not None:
+            return self._ler_aws_credentials()[1]
+        else:
+            return os.environ.get('AWS_SECRET_ACCESS_KEY')
     
     @property
     def aws_region(self) -> str:
-        return self._ler_aws_credentials()[2]
+        if arq_aws_credentials_spec is not None:
+            return self._ler_aws_credentials()[2]
+        else:
+            return os.environ.get('AWS_REGION')
     
     @property
     def bucket_name(self) -> str:
-        return self._ler_aws_credentials()[3]
+        if arq_aws_credentials_spec is not None:
+            return self._ler_aws_credentials()[3]
+        else:
+            return os.environ.get('AWS_BUCKET')
     
     @property
     def file_name(self) -> str:
-        return self._ler_aws_credentials()[4]
+        if arq_aws_credentials_spec is not None:
+            return self._ler_aws_credentials()[4]
+        else:
+            return os.environ.get('AWS_FILE')
     
     @property
     def status_score_salvo(self) -> bool:
