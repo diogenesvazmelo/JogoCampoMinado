@@ -40,6 +40,7 @@ class AWSHandler:
         # Salvando os dados atualizados no S3
         try:
             self._s3.put_object(Body=json.dumps(json_combinado), Bucket=self.bucket_name, Key=self.file_name)
+            self._s3.close()
             self._status_score_salvo = True
             return self._dados['data']
         except:
@@ -49,12 +50,13 @@ class AWSHandler:
         json_base = {}
         json_base["Registros"] = []
         self._s3.put_object(Body=json.dumps(json_base), Bucket=self.bucket_name, Key=self.file_name)
+        self._s3.close()
 
     def ler_do_s3(self) -> dict:
         try:
             response = self._s3.get_object(Bucket=self.bucket_name, Key=self.file_name)
-            dados_lidos = json.loads(response['Body'].read().decode('utf-8'))
             self._s3.close()
+            dados_lidos = json.loads(response['Body'].read().decode('utf-8'))
         except:
             # Se o arquivo não existir, retorna um dicionario vazio
             json_base = {}
@@ -89,6 +91,7 @@ class AWSHandler:
             return self._ler_aws_credentials()[0]
         else:
             return os.environ.get('AWS_ACCESS_KEY_ID')
+            
     @property
     def aws_secret_access_key(self) -> str:
         if arq_aws_credentials_spec is not None:
@@ -123,7 +126,7 @@ class AWSHandler:
 
     @property
     def arquivo_aws_credentials_disponivel(self) -> bool:
-        return self._arquivo_aws_credentials_disponivel
+        return (arq_aws_credentials_spec is not None)
     
     @property
     def sucesso_autentica(self) -> bool:
