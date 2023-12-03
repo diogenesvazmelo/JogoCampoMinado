@@ -125,8 +125,8 @@ class AWSHandler:
         return self._status_score_salvo
 
     @property
-    def arquivo_aws_credentials_disponivel(self) -> bool:
-        return (arq_aws_credentials_spec is not None)
+    def aws_credentials_disponivel(self) -> bool:
+        return (self.aws_access_key_id is not None)
     
     @property
     def sucesso_autentica(self) -> bool:

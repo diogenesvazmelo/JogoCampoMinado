@@ -57,7 +57,7 @@ class TestAwsHandler(unittest.TestCase):
         """
 
         # assert to check if first parameter is greater than second param 
-        self.assertTrue(self.aws.arquivo_aws_credentials_disponivel, message)
+        self.assertTrue(self.aws.aws_credentials_disponivel, message)
 
     def testLerDoS3(self):
         # error message in case if test case got failed 
