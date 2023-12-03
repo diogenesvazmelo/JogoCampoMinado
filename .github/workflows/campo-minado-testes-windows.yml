@@ -10,7 +10,7 @@ on:
     branches: [ "main" ]
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   build:
@@ -52,3 +52,10 @@ jobs:
         AWS_FILE: ${{ secrets.AWS_FILE }}
       run: |
         pyinstaller --onefile .\src\main.py -n CampoMinado_Win
+
+    - name: Commit report
+      run: |
+          git config --global user.name 'github-actions'
+          git config --global user.email 'github-actions@users.noreply.github.com'
+          git commit -am "Automated build"
+          git push
