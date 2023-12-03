@@ -51,7 +51,7 @@ jobs:
         AWS_BUCKET: ${{ secrets.AWS_BUCKET }}
         AWS_FILE: ${{ secrets.AWS_FILE }}
       run: |
-        pyinstaller --onefile .\src\main.py -n CampoMinado_Win
+        pyinstaller --onefile .\src\main.py -n CampoMinado
 
     - name: Commit report
       run: |
