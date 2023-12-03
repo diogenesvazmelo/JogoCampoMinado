@@ -50,10 +50,10 @@ class TestAwsHandler(unittest.TestCase):
 
         self.assertTrue(conexao, message)
 
-    def testArquivoCredenciaisAcessoAWS(self):
+    def testCredenciaisAcessoAWS(self):
         # error message in case if test case got failed 
         message = """
-            Arquivo com as credenciais de acesso ao seriço AWS não localizado.
+            Credenciais de acesso ao seriço AWS não localizadas.
         """
 
         # assert to check if first parameter is greater than second param 
