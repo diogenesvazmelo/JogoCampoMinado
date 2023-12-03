@@ -37,11 +37,12 @@ class AWSHandler:
         json_combinado["Registros"] = lista_hist
         
         # Salvando os dados atualizados no S3
-        self._s3.put_object(Body=json.dumps(json_combinado), Bucket=self.bucket_name, Key=self.file_name)
-
-        self._status_score_salvo = True
-
-        return self._dados['data']
+        try:
+            self._s3.put_object(Body=json.dumps(json_combinado), Bucket=self.bucket_name, Key=self.file_name)
+            self._status_score_salvo = True
+            return self._dados['data']
+        except:
+            return None
 
     def zerar_placar(self):
         json_base = {}
