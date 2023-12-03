@@ -75,4 +75,4 @@ class TestAwsHandler(unittest.TestCase):
         """
 
         # assert to check if first parameter is greater than second param 
-        self.assertEqual(self.aws.salvar_no_s3(), self.data_salvamento, message) 
+        self.assertGreaterEqual(self.aws.salvar_no_s3(), self.data_salvamento, message) 
