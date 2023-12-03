@@ -44,7 +44,6 @@ jobs:
       run: |
         pytest
     - name: Build with pyinstaller
-      working-directory: ./src
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -52,4 +51,4 @@ jobs:
         AWS_BUCKET: ${{ secrets.AWS_BUCKET }}
         AWS_FILE: ${{ secrets.AWS_FILE }}
       run: |
-        pyinstaller --onefile .\src\main.py -n CampoMinado
+        pyinstaller --onefile .\src\main.py -n CampoMinado_Win
