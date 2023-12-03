@@ -53,7 +53,7 @@ class AWSHandler:
             response = self._s3.get_object(Bucket=self.bucket_name, Key=self.file_name)
             dados_lidos = json.loads(response['Body'].read().decode('utf-8'))
             self._s3.close()
-        except self._s3.exceptions.NoSuchKey:
+        except:
             # Se o arquivo não existir, retorna um dicionario vazio
             json_base = {}
             json_base["Registros"] = []
