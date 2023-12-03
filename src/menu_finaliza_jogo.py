@@ -15,7 +15,7 @@ class MenuFinalizaJogo:
     def menu_finaliza_jogo(self):
         aws_handler = AWSHandler(self._mapa, self._jogador)
 
-        if not aws_handler.arquivo_aws_credentials_disponivel:
+        if not aws_handler.aws_credentials_disponivel:
             self._exibir_menu_missing_aws_credentials(self._mapa)
             input("\n\n Pressione ENTER para continuar...")
         elif not aws_handler.sucesso_autentica:

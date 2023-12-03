@@ -17,10 +17,6 @@ class AWSHandler:
 
         self._s3 = None
         self._sucesso_autentica = self._autentica()
-
-        self._arquivo_aws_credentials_disponivel = False
-        if arq_aws_credentials_spec is not None:
-            self._arquivo_aws_credentials_disponivel = True
     
     def _autentica(self) -> bool:
         try:
