@@ -42,7 +42,7 @@ class AWSHandler:
             self._status_score_salvo = True
             return self._dados['data']
         except:
-            return None
+            return datetime.min
 
     def zerar_placar(self):
         json_base = {}
